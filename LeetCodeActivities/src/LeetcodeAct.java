@@ -102,6 +102,7 @@ public class LeetcodeAct {
         }
     }
 
+    //merging K lists, 01/08/2025
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) return null;
 
@@ -125,6 +126,129 @@ public class LeetcodeAct {
         }
         return dummy.next;
 
+    }
+
+    //Adding two reverse ordered linked lists!!, 01/08/2025
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummyhead=new ListNode();
+        ListNode current= dummyhead;
+        int carry = 0;
+
+        while (l1 != null || l2 != null || carry != 0) {
+            int value1 = (l1 != null) ? l1.val : 0;
+            int value2 = (l2 != null) ? l2.val : 0;
+
+            int sum = value1 + value2 + carry;
+            carry = sum / 10;
+
+            current.next = new ListNode(sum % 10);
+            current = current.next;
+
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
+        }
+
+        return dummyhead.next;
+    }
+
+    //A code that find a sum for a target in the array input, 01/08/2025
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+
+            if (map.containsKey(complement)) {
+                return new int[] { map.get(complement), i };
+            }
+
+            map.put(nums[i], i);
+        }
+        throw new IllegalArgumentException("No two sum solution");
+    }
+
+    //method that find the longest substring, 01/08/2025
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length();
+        int maxLength = 0;
+
+        HashSet<Character> seen = new HashSet<>();
+        int left = 0;
+
+        for (int right = 0; right < n; right++) {
+            char currentChar = s.charAt(right);
+
+            while (seen.contains(currentChar)) {
+                seen.remove(s.charAt(left));
+                left++;
+            }
+
+            seen.add(currentChar);
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        return maxLength;
+    }
+
+    //zigzag string
+    public String convert(String s, int numRows) {
+        if (numRows == 1 || s.length() <= numRows){
+            return s;
+        }
+
+
+
+        StringBuilder[] rows = new StringBuilder[numRows];
+        for (int i = 0; i < numRows; i++){
+            rows[i] = new StringBuilder();
+        }
+
+        int currRow = 0;
+        boolean goingDown = false;
+
+        for (char c : s.toCharArray()) {
+            rows[currRow].append(c);
+
+            // Reverse direction at top or bottom row
+            if (currRow == 0 || currRow == numRows - 1){
+                goingDown = !goingDown;
+            }
+
+            currRow += goingDown ? 1 : -1;
+        }
+
+
+        StringBuilder result = new StringBuilder();
+        for (StringBuilder row : rows){
+            result.append(row);
+        }
+
+        return result.toString();
+
+    }
+
+    //changing int to reverse
+    public int reverse(int x) {
+        int result = 0;
+
+        while (x != 0) {
+            int digit = x % 10;
+            x /= 10;
+
+            if (result > Integer.MAX_VALUE / 10 ||
+                    (result == Integer.MAX_VALUE / 10 && digit > 7)){
+                return 0;
+            }
+
+            if (result < Integer.MIN_VALUE / 10 ||
+                    (result == Integer.MIN_VALUE / 10 && digit < -8)){
+                return 0;
+            }
+
+            result = result * 10 + digit;
+        }
+
+        return result;
     }
 }
 
